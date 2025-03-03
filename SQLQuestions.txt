@@ -1,0 +1,60 @@
+1)What is SQL, and what is it used for?
+ SQL (Structured Query Language) is a language for managing and manipulating relational databases. It’s used to create, read, update, and delete data (CRUD operations), as well as manage database structures like tables and indexes.
+
+2)What’s the difference between SELECT, INSERT, UPDATE, and DELETE?
+  SELECT :-  Retrieves data from a table, select is a pysical command beacuse it wouldn't effect database tables
+		EX :- SELECT * FROM Employees
+  INSERT:- Adds new data to a table
+		EX :- INSERT INTO Employees (Name, Age) VALUES ('John', 30)
+  UPDATE:- Modifies existing data
+		EX :- UPDATE Employees SET Age = 31 WHERE Name = 'John'
+  DELETE: Removes data from a table
+		EX :- DELETE FROM Employees WHERE Name = 'John'
+		
+3)What is a primary key, and why is it important?
+ A primary key is a unique identifier for each record in a table, it don't duplicates, and is used to establish relationships with other tables.
+ 
+4)What is a foreign key?
+  it is usefull to creating a relationship between tables, A foreign key is a field in one table that links to the primary key in another table
+
+5)What’s the difference between WHERE and HAVING in SQL?
+	WHERE :- WHERE clause filters rows data before grouping 
+	HAVING :-  HAVING clause filters data after grouping, used with aggregate functions like COUNT, SUM  and grouping clause
+
+6)What are aggregate functions in SQL? Give examples?
+	Aggregate functions perform calculations on a set of values and return a single value
+		EX :- COUNT(): Counts rows (COUNT(*) FROM Employees).
+			  SUM(): Sums numeric values (SUM(Salary) FROM Employees).
+			  AVG(): Calculates the average (AVG(Age) FROM Employees).
+			  MAX()/MIN(): Finds the highest/lowest value (MAX(Salary) FROM Employees).
+
+7)What is the difference between INNER JOIN, LEFT JOIN, and RIGHT JOIN?
+	INNER JOIN :- Returns only matching records from both tables 
+	LEFT JOIN :- Returns all records from the left table, with NULLs for non-matching right table records.
+	RIGHT JOIN :- Returns all records from the right table, with NULLs for non-matching left table records.
+	
+8)How do you write a query to find duplicate records in a table?
+	Use GROUP BY and HAVING to identify duplicates:
+		SELECT Email, COUNT(*) FROM Users 
+		GROUP BY Email 
+		HAVING COUNT(*) > 1;
+
+9)What is an index, and why use it?
+	An index is a data structure (like a book’s index) that improves query performance by speeding up data retrieval. However, it can slow down INSERT, UPDATE, and DELETE operations.
+	EX :- CREATE INDEX idx_employee_name ON Employees(Name);
+
+10)What is a subquery, and when would you use it?
+	A subquery is a query nested inside another query. Query execuition starts from nested query
+		EX :- SELECT Name FROM Employees 
+			  WHERE DepartmentID IN (SELECT ID FROM Departments WHERE Location = 'New York');
+11)Write a query to find the top 5 highest-paid employees in a company?
+		SELECT Name, Salary FROM Employees 
+		ORDER BY Salary DESC 
+		LIMIT 5
+12)What’s the difference between TRUNCATE and DELETE?
+	TRUNCATE:- Removes all rows from a table but keeps the structure (faster, no rollback possible).
+	DELETE:- Removes specific rows (slower, can be rolled back, supports WHERE clause).
+13)How do you handle NULL values in SQL?
+	Use IS NULL or IS NOT NULL to check for NULLs.
+	Use COALESCE or IFNULL to replace NULL with a default value.
+	EX:- SELECT COALESCE(ManagerID, 0) AS ManagerID FROM Employees;
