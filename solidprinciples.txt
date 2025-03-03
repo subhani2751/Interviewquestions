@@ -1,0 +1,13 @@
+						-- Solid principles --
+
+1)what are solid principles?
+ solid principles are also know as design principles allow us to write code in more flexible and maintainble, they  are five types 
+		1)single responsible principle
+		2)open/close principle
+		3)liskov substitution principle
+		4)interface segregation principle
+		5)dependency invertion principle
+   1)single responsible princeple :- 
+	every class or a pice of code should have one reason for exits, for example if a class is responsible for saving a file then we shouldn't write code for sending mails ..
+   2)open/close principle :- 
+	
