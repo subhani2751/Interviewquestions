@@ -2,12 +2,196 @@
 
 1)what are solid principles?
  solid principles are also know as design principles allow us to write code in more flexible and maintainble, they  are five types 
-		1)single responsible principle
-		2)open/close principle
-		3)liskov substitution principle
-		4)interface segregation principle
-		5)dependency invertion principle
-   1)single responsible princeple :- 
-	every class or a pice of code should have one reason for exits, for example if a class is responsible for saving a file then we shouldn't write code for sending mails ..
-   2)open/close principle :- 
+		1)Single responsible principle
+		2)Open/Close principle
+		3)Liskov substitution principle
+		4)Interface segregation principle
+		5)Dependency invertion principle
+   1)Single responsible princeple :- 
+	every class or a pice of code should have one reason for exits, for example if a class is responsible for saving a file then we shouldn't 
+	write code for sending mails ..
+   2)Open/Close principle :- 
+	Your code should be open for extension means you can add new features but close for modification means you donn't need to change the existing code
+   3)Liskov substitution principle :- 
+	if we have base class, any subclass should be able to replace it code without breaking the program of base class how it works
+		public abstract class Bird
+		{
+			public string Name { get; set; }
+
+			public Bird(string name)
+			{
+				Name = name;
+			}
+		}
+
+		public interface IFlyable
+		{
+			void Fly();
+		}
+
+		public class Sparrow : Bird, IFlyable
+		{
+			public Sparrow(string name) : base(name) { }
+
+			public void Fly()
+			{
+				Console.WriteLine($"{Name} the sparrow is flying high!");
+			}
+		}
+
+		public class Penguin : Bird
+		{
+			public Penguin(string name) : base(name) { }
+
+			public void Swim()
+			{
+				Console.WriteLine($"{Name} the penguin is swimming!");
+			}
+		}
+
+		public class Program
+		{
+			public static void MakeBirdFly(IFlyable bird)
+			{
+				bird.Fly(); // Only works for birds that can fly
+			}
+
+			static void Main()
+			{
+				Sparrow sparrow = new Sparrow("Sparky");
+				Penguin penguin = new Penguin("Pingu");
+
+				MakeBirdFly(sparrow); // Output: "Sparky the sparrow is flying high!"
+				// MakeBirdFly(penguin); // This won’t even compile because Penguin isn’t IFlyable
+
+				penguin.Swim(); // Output: "Pingu the penguin is swimming!"
+			}
+		}
+   4)Interface segregation principle :- 
+	we should not add unnecessary abstract methods in one big interface, don't force a class to impliment unnecessary method it not needed, instead of that split big interfaces into smaller once
+			public interface IPrinter
+			{
+				void Print();
+			}
+
+			public interface IScanner
+			{
+				void Scan();
+			}
+
+			public interface IFax
+			{
+				void Fax();
+			}
+
+			public class MultifunctionPrinter : IPrinter, IScanner, IFax
+			{
+				public void Print()
+				{
+					Console.WriteLine("Printing document...");
+				}
+
+				public void Scan()
+				{
+					Console.WriteLine("Scanning document...");
+				}
+
+				public void Fax()
+				{
+					Console.WriteLine("Sending fax...");
+				}
+			}
+
+			public class SimplePrinter : IPrinter
+			{
+				public void Print()
+				{
+					Console.WriteLine("Printing document...");
+				}
+			}
+
+			public class SimpleScanner : IScanner
+			{
+				public void Scan()
+				{
+					Console.WriteLine("Scanning document...");
+				}
+			}
+
+			public class Program
+			{
+				public static void UsePrinter(IPrinter printer)
+				{
+					printer.Print();
+				}
+
+				public static void UseScanner(IScanner scanner)
+				{
+					scanner.Scan();
+				}
+
+				static void Main()
+				{
+					SimplePrinter simplePrinter = new SimplePrinter();
+					MultifunctionPrinter multiPrinter = new MultifunctionPrinter();
+					SimpleScanner scanner = new SimpleScanner();
+
+					UsePrinter(simplePrinter);  // Output: "Printing document..."
+					UsePrinter(multiPrinter);   // Output: "Printing document..."
+					UseScanner(multiPrinter);   // Output: "Scanning document..."
+					UseScanner(scanner);        // Output: "Scanning document..."
+				}
+			}
+   5)Dependency Invertion Principle :- 
+		high-level parts of your code (like business logic) shouldn’t depend on low-level details (like specific tools or implementations). Instead, both should depend on abstractions (like interfaces). This makes your code more flexible and easier to change.
+			public interface ILogger
+			{
+				void Log(string message);
+			}
+
+			public class FileLogger : ILogger
+			{
+				public void Log(string message)
+				{
+					Console.WriteLine($"Writing to file: {message}");
+				}
+			}
+
+			public class ConsoleLogger : ILogger
+			{
+				public void Log(string message)
+				{
+					Console.WriteLine($"Writing to console: {message}");
+				}
+			}
+
+			public class MessageService
+			{
+				private readonly ILogger _logger;
+
+				public MessageService(ILogger logger)
+				{
+					_logger = logger; // Dependency is injected, not hardcoded
+				}
+
+				public void SendMessage(string message)
+				{
+					_logger.Log($"Message sent: {message}");
+				}
+			}
+
+			public class Program
+			{
+				static void Main()
+				{
+					ILogger fileLogger = new FileLogger();
+					MessageService fileService = new MessageService(fileLogger);
+					fileService.SendMessage("Hello, file!"); // Output: "Writing to file: Message sent: Hello, file!"
+
+					ILogger consoleLogger = new ConsoleLogger();
+					MessageService consoleService = new MessageService(consoleLogger);
+					consoleService.SendMessage("Hello, console!"); // Output: "Writing to console: Message sent: Hello, console!"
+				}
+			}
+	
 	
