@@ -1,0 +1,60 @@
+1)what is git and why it is used?
+  git is a version control system it helps us to track the code changes, it is used so multiple developers can work on a project  simultaneously, keeps tacking changes, and easilty revert
+  
+2)what is diffrent between git and github ?
+ git is a tool for version control that exist in your system, github is a cloud platform that host git repositories , adding colleberation features like pull requests and issue tracking
+ 
+3)How do you initialize a git repository?
+ Run git init command through CMD from the application project, that creates a hidden .git directory to start tracking changes
+ 
+4)what does git commit do?
+ It saves your git add changes to the local repository with a messge describing what you changed
+	EX :- git commit -m "Add user login feature"
+	
+5)what is different between git pull and git fetch?
+  git fetch :- downloads changes from remote repository but doesn't merge that changes into our local branch
+  git pull :- downloads changes from remote repository and merge that changes into our local branch
+  
+6)what is branch in git and why it used?
+  A branch is a separate line of development. You use it to work on features or fixes without affecting the main codebase
+	Ex :- git branch feature-login
+		  git checkout feature-login
+
+7)How do you merge a branch into another?
+	Switch to the target branch , then merge the other branch:
+		EX :- git checkout main
+			  git merge feature-login
+
+8)What happens if there’s a merge conflict?
+	Git pauses the merge when it can’t decide how to combine changes (e.g., same line edited differently). You manually edit the conflicting files, stage them with git add, and finish with git commit.
+
+9)How do you undo the last commit but keep the changes?
+	use git reset --soft HEAD^1
+	This moves the commit back to staging, so you can edit and recommit
+
+10)What’s the purpose of .gitignore?
+  It’s a file listing patterns (e.g., *.log or bin/) that Git should ignore, like build outputs or sensitive config files.
+
+11)How would you revert a commit that’s already pushed to a remote repository?
+	Use git revert to create a new commit undoing the changes, then push it:
+	EX :- git revert <commit-hash>
+		  git push origin main
+	This keeps the history intact, unlike git reset	
+
+12)What does git stash do, and when might you use it?
+ git stash temporarily saves your uncommitted changes so you can switch branches or pull updates. Use it when you’re mid-work but need to jump to another task. Retrieve it with
+	EX:- git stash pop
+
+13)How do you see the history of changes in a repository?
+ we have a command call git log, it will show list of commites
+
+14)What’s the difference between git reset --hard and git reset --soft?
+ hard :-  discards all changes (staged and unstaged) back to the specified commit.
+ soft :-  keeps changes in staging, letting you modify them before recommitting.
+  Ex:
+	  git reset --hard HEAD^1  # Gone forever
+	  git reset --soft HEAD^1  # Changes stay in staging
+
+15)How do you clone a specific branch from a remote repository?
+  by using git clone -b <branch-name> <repository-url>
+  
