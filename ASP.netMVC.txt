@@ -1,0 +1,142 @@
+1)What is ASP.NET MVC, and how does it differ from ASP.NET Web Forms?
+  ASP.NET MVC is a framework for building web applications using the Model-View-Controller pattern, separating concerns for better maintainability and testability. Unlike ASP.NET Web Forms, which uses a page-based, event-driven model with server controls, MVC uses stateless HTTP, URL routing, and no view state, focusing on clean URLs and separation of logic
+
+2)What are the main components of ASP.NET MVC?
+	MODEL:- Represents the data and business logic (e.g., classes for data entities, like Product).
+	VIEW:- Handles the UI and presentation (e.g., Razor views for displaying data).
+	CONTROLLER:- Manages user input, processes requests, and coordinates between Model and View (e.g., HomeController handling HTTP requests).
+
+3)What is the role of the RouteConfig.cs file in ASP.NET MVC?
+	RouteConfig.cs (in the App_Start folder) defines URL routing rules. It maps incoming URLs to controller actions, enabling clean, SEO-friendly URLs
+	EX :- routes.MapRoute(
+			name: "Default",
+			url: "{controller}/{action}/{id}",
+			defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+			);
+
+4)What is the purpose of the Model in ASP.NET MVC?
+ The Model represents the data structure and business logic of the application. It’s typically a class (e.g., Product) that interacts with a database (via Entity Framework) or holds data for the View.
+
+5)What is a Controller, and what methods does it contain?
+	A Controller handles user requests, processes data, and returns responses (Views or JSON). It contains action methods (e.g., Index(), Details(int id)) that respond to HTTP requests.
+	 EX :- 	public class HomeController : Controller
+			{
+				public ActionResult Index()
+				{
+					return View();
+				}
+			}
+
+6)What is the difference between ViewBag, ViewData, and TempData?
+	VIEWBAG :- A dynamic object to pass data from Controller to View 
+	VIEWDATA :- A dictionary to pass data from Controller to View 
+	TEMPDATA :- Stores data for one request (used for redirects, persists until read).
+		Ex: ViewBag.Message = "Hello";
+			ViewData["Message"] = "Hello";
+			TempData["Success"] = "Operation successful";
+
+7)What are Action Filters in ASP.NET MVC, and how are they used?
+ Action Filters are attributes that run before or after an action method executes
+	[Authorize]: Restricts access to authenticated users.
+	[HttpGet]: Specifies the HTTP method for an action.
+	[OutputCache]: Caches the action result.
+	  EX:- [Authorize]
+			public ActionResult PrivateData()
+			{
+				return View();
+			}
+
+8)What is the purpose of the Layout page in ASP.NET MVC?
+ The Layout page (e.g., _Layout.cshtml) acts as a master page, defining the common structure (header, footer, navigation) for all views. It uses Razor syntax and @RenderBody() to inject content from individual views.
+
+9)How does routing work in ASP.NET MVC?
+ Routing maps URLs to controller actions using the RouteConfig.cs file or attributes ([Route]). It supports customizable patterns (e.g., {controller}/{action}/{id}). 
+  EX :- [Route("products/{id}")]
+		public ActionResult Details(int id)
+		{
+			return View();
+		}
+
+10)What is the difference between RedirectToAction and Redirect?
+ REDIRECTTOACTION:- Redirects to another action within the same or different controller (e.g., RedirectToAction("Index", "Home")).
+ REDIRECT:- Redirects to a specific URL (e.g., Redirect("/Home/Index")). Both issue HTTP 302 responses.
+
+11)How would you handle form submission in ASP.NET MVC?
+	Create a model (e.g., User).
+	Use a View with a form and Html.BeginForm() or Ajax.BeginForm().
+	In the Controller, handle the POST action with model binding. 
+	Ex :- 
+	  cs:-
+		public class UserController : Controller
+		{
+			[HttpGet]
+			public ActionResult Create()
+			{
+				return View();
+			}
+
+			[HttpPost]
+			public ActionResult Create(User model)
+			{
+				if (ModelState.IsValid)
+				{
+					// Save to database (e.g., using Entity Framework)
+					db.Users.Add(model);
+					db.SaveChanges();
+					return RedirectToAction("Index");
+				}
+				return View(model);
+			}
+		}
+		cshtml :- 
+		    @model User
+			@using (Html.BeginForm())
+			{
+				@Html.TextBoxFor(m => m.Name)
+				<input type="submit" value="Submit" />
+			}
+
+12)How would you implement authentication and authorization in ASP.NET MVC?
+ Use ASP.NET Identity for authentication (e.g., user registration, login).
+ Apply [Authorize] on controllers or actions to restrict access.
+ Use roles or claims for authorization. 
+   Ex:- [Authorize(Roles = "Admin")]
+		public ActionResult AdminDashboard()
+		{
+			return View();
+		}
+
+13)What is the purpose of the PartialView in ASP.NET MVC?
+ PartialView renders a reusable UI component within a View (e.g., a sidebar, comment section). It’s called with Html.Partial() or Html.RenderPartial()
+  EX:- cs:-     public ActionResult Index()
+				{
+					return View();
+				}
+	Index.cshtml :- <div>@Html.Partial("_Sidebar")</div>
+
+14)How would you handle errors in ASP.NET MVC?
+	Use the HandleError attribute on controllers or globally in FilterConfig.cs.
+	Create a custom error view (e.g., Error.cshtml).
+	Configure web.config for HTTP error handling (e.g., <customErrors>)
+	EX:-    [HandleError]
+			public class HomeController : Controller
+			{
+				public ActionResult ThrowError()
+				{
+					throw new Exception("An error occurred.");
+				}
+			}
+
+15)What is the difference between View() and PartialView() in a Controller?
+ VIEW():- returns a full view with a layout (e.g., _Layout.cshtml).
+ PARTIALVIEW() :- returns a partial view without a layout, used for reusable fragments
+		EX :- 
+		public ActionResult FullView()
+		{
+			return View(); // Returns full view with layout
+		}
+
+		public ActionResult PartialContent()
+		{
+			return PartialView("_PartialContent"); // Returns partial view
+		}
